@@ -1,7 +1,7 @@
-SI507 Final Project <br /> 
-Winter 2018  <br />
+##SI507 Final Project <br /> 
+##Winter 2018  <br />
   
-DATA SOURCES USED:<br />
+#DATA SOURCES USED:<br />
 Google Places API (https://developers.google.com/places/)<br />
 Yelp Fusion API (https://www.yelp.com/fusion)<br />
 Flickr API (https://www.flickr.com/services/api/flickr.photos.search.html)<br />
@@ -11,11 +11,11 @@ In order to access data sources, api keys/access tokens are required. Copy and p
 
 Requirements.txt contains all needed modules to successfully run final.py<br />
 
-MAJOR DATA STRUCTURES AND FUNCTIONS:<br />
+#MAJOR DATA STRUCTURES AND FUNCTIONS:<br />
 
 The code is organized into sections: <br />
-    API Keys <br />
-        Imported from secrets.py<br />
+    <pre><code>API Keys</code></pre> <br />
+        <pre><code>Imported from secrets.py</code></pre><br />
     CACHING & REQUESTING DATA<br />
         All data is cached in the function "make_request_using_cache()", with all cached data in the file, "cache.json"<br />
     CLASS DEFINITIONS<br />
@@ -37,7 +37,7 @@ The code is organized into sections: <br />
         Handles all user interface functions. <br />
 
 
-TO RUN PROGRAM FROM COMMAND LINE:<br />
+#TO RUN PROGRAM FROM COMMAND LINE:<br />
 Type "python3 final.py"<br />
 
 Program will randomly generate 10 places to get started. You can choose to view one of those places or enter a new search term. After selecting your choice, you will be presented with 4 presentation options: <br />
