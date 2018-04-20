@@ -124,6 +124,7 @@ def init_db(db_name):
     except Error as e:
         print(e)
 
+    #Create Table Statements
     create_table_google = '''
         CREATE TABLE 'GooglePlaces' (
             'Id' INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -161,13 +162,66 @@ def init_db(db_name):
             'URL' TEXT
             );
         '''
+
+    #Check if table exists
+
+    existing_google_statement = '''
+        SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'GooglePlaces'
+    '''
+    cur.execute(existing_google_statement)
+    for ea in cur:
+        exists_google = ea[0] # =0 if table does not exist
+
+    if exists_google != 0:
+        uinput = input("Google table exists. Delete? yes/no ")
+        if uinput == 'yes':
+            drop_statement = '''
+            DROP TABLE IF EXISTS 'GooglePlaces';
+            '''
+            cur.execute(drop_statement)
+            cur.execute(create_table_google)
+    else:
+        cur.execute(create_table_google)
+
+    existing_yelp_statement = '''
+        SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'YelpPlaces'
+        '''
+    cur.execute(existing_yelp_statement)
+    for ea in cur:
+        exists_yelp = ea[0] # =0 if table does not exist
+
+    if exists_yelp != 0:
+        uinput = input("Yelp table exists. Delete? yes/no ")
+        if uinput == 'yes':
+            drop_statement = '''
+            DROP TABLE IF EXISTS 'YelpPlaces';
+            '''
+            cur.execute(drop_statement)
+            cur.execute(create_table_yelp)
+    else:
+        cur.execute(create_table_yelp)
+
+    existing_flickr_statement = '''
+        SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = 'FlickrImages'
+        '''
+    cur.execute(existing_flickr_statement)
+    for ea in cur:
+        exists_flickr = ea[0] # =0 if table does not exist
+
+    if exists_flickr != 0:
+        uinput = input("Flickr table exists. Delete? yes/no ")
+        if uinput == 'yes':
+            drop_statement = '''
+            DROP TABLE IF EXISTS 'FlickrImages';
+            '''
+            cur.execute(drop_statement)
+            cur.execute(create_table_flickr)
+    else:
+        cur.execute(create_table_flickr)
 #SearchId is primary key from google places
 #SearchName is name of location we are searching for photos around
 #ReqId is whether the place lives in google (1) or yelp (2)  
 
-    cur.execute(create_table_google)
-    cur.execute(create_table_yelp)
-    cur.execute(create_table_flickr)
 
     conn.close()
 
@@ -672,15 +726,15 @@ def user_search(searchterm):
     searchresult = cur.execute(selectsearchstatement,[searchterm]).fetchall()
 
     if len(searchresult) > 0:
-        print(type(searchresult))
-        print(len(searchresult))
+        # print(type(searchresult))
+        # print(len(searchresult))
         places = []
         for ea in searchresult:
             places.append(GooglePlace(ea[0], ea[1], ea[2], ea[3]))
         # for ea in searchresult:
         #   print(ea[0],ea[1],ea[2],ea[3])
     else:
-        print("No results in existing database - New search")
+        print("No results in existing database - New search initiated")
         places = get_place_info(searchterm)
         
         insert_google_data(places,DBNAME)
@@ -720,11 +774,17 @@ def generate_userlist():
     conn.close()
     return placelist
 
+def load_helpfile():
+    with open('help.txt') as f:
+        return f.read()
+
 def user_interface():
     response = ''
     pres = 0
     num = 1
     num2 = 1
+    helpfile = load_helpfile()
+
     while response != 'exit':
         num = 1
         print('-----------')
@@ -734,6 +794,9 @@ def user_interface():
             num += 1
         # print(places)
         response = input('Select a place from the list OR enter a name of a place: ')
+        if response == 'help':
+            print(helpfile)
+            continue
         if response != 'exit':
             if len(response) <= 2:
                 print('-----------')
@@ -808,7 +871,7 @@ if __name__ == "__main__":
     user_interface()
 
 
-    # init_db(DBNAME)
+    # init_db(DBNAME2)
     # searchterm = "Yosemite National Park"
     # searchterm = "Lake Tahoe"
     # searchterm = "Michigan League"
