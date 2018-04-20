@@ -1,0 +1,15 @@
+
+
+------------------
+Help File:
+
+Type "python3 final.py"
+
+Program will randomly generate 10 places to get started. You can choose to view one of those places or enter a new search term. After selecting your choice, you will be presented with 4 presentation options:
+
+1. View Yelp Review page of a nearby place of your choice in your browser
+2. View a map with the place and several nearby places in your browser
+3. View a chart that gives ratings comparisons for several nearby places in your browser
+4. View an image that was taken nearby in your browser
+
+
